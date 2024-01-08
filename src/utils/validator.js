@@ -22,8 +22,9 @@ const validatePhone = (phone) =>
 const validateName = (name) =>
   body(name)
     .custom((value) => {
-      const duplicated = loadContacts().find((contact) => {
-        contact.name == value;
+      const contacts = loadContacts();
+      const duplicated = contacts.find((contact) => {
+        return contact.name == value;
       });
 
       if (duplicated) {
