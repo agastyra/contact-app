@@ -2,7 +2,7 @@ const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
 const dotenv = require("dotenv");
-const { appInit, loadContacts } = require("./contact");
+const { appInit, loadContacts, addContact } = require("./contact");
 
 const app = express();
 dotenv.config();
@@ -12,6 +12,7 @@ app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
+app.use(express.urlencoded());
 
 app.use((req, res, next) => {
   appInit();
@@ -25,6 +26,17 @@ app.get("/", (req, res) => {
     layout: "layouts/app",
     contacts,
   });
+});
+
+app.get("/add", (req, res) => {
+  res.render("add-contact", {
+    layout: "layouts/app",
+  });
+});
+
+app.post("/add", (req, res) => {
+  addContact(req.body);
+  res.redirect("/");
 });
 
 app.use((req, res) => {

@@ -13,4 +13,19 @@ const loadContacts = () => {
   return contacts;
 };
 
-module.exports = { appInit, loadContacts };
+const addContact = (data) => {
+  const name = data.name;
+  const email = data.email;
+  const phone = data.phone;
+  const contacts = loadContacts();
+
+  contacts.push({
+    name,
+    email,
+    phone,
+  });
+
+  fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
+};
+
+module.exports = { appInit, loadContacts, addContact };
