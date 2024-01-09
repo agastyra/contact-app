@@ -71,6 +71,10 @@ app.post(
   }
 );
 
+app.delete("/delete/:name", (req, res) => {
+  res.send(req.params.name);
+});
+
 app.use((req, res) => {
   res.status(404);
   res.send(`Url '${req.url}' is not found! Please type correct url!`);
