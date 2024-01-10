@@ -11,17 +11,17 @@ const loadContacts = async () => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, "utf-8", (err, data) => {
       if (err) reject(err.message);
-  const contacts = JSON.parse(data);
+      const contacts = JSON.parse(data);
       resolve(contacts);
     });
   });
 };
 
-const addContact = (data) => {
+const addContact = async (data) => {
   const name = data.name;
   const email = data.email;
   const phone = data.phone;
-  const contacts = loadContacts();
+  const contacts = await loadContacts();
 
   contacts.push({
     name,

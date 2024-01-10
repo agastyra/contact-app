@@ -21,8 +21,8 @@ const validatePhone = (phone) =>
 
 const validateName = (name) =>
   body(name)
-    .custom((value) => {
-      const contacts = loadContacts();
+    .custom(async (value) => {
+      const contacts = await loadContacts();
       const duplicated = contacts.find((contact) => {
         return contact.name == value;
       });

@@ -1,9 +1,17 @@
-document.addEventListener("DOMContentLoaded", async function (e) {
-  const contactsTable = document.querySelector("table#contacts tbody");
-  try {
-    const response = await fetch("/contacts");
-    const { data } = await response.json();
-    const contacts = data;
+if (window.location.pathname == "/") {
+  document.addEventListener("DOMContentLoaded", async function (e) {
+    const contactList = document.querySelector(".contact-list");
+    try {
+      const response = await fetch("/contacts");
+      const { data } = await response.json();
+      const contacts = data;
+      const list = EachContact(contacts);
+      contactList.innerHTML = TableContact(list, contacts);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   document.addEventListener("click", function (e) {
     if (e.target.classList.contains("delete-button")) {
       e.preventDefault();
@@ -43,51 +51,55 @@ document.addEventListener("DOMContentLoaded", async function (e) {
     }
   });
 }
-    let list = "";
 
-    contacts.forEach((contact, i) => {
-      list += `
+function TableContact(list = "", contacts = []) {
+  return `<table class="table" id="contacts">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email Address</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">More</th>
+        </tr>
+      </thead>
+      <tbody>
+      ${contacts.length > 0 ? list : '<td colspan="5">No contact in list.</td>'}
+      </tbody>
+    </table>`;
+}
+
+function EachContact(contacts = []) {
+  let list = "";
+
+  contacts.forEach((contact, i) => {
+    list += `
       <tr>
         <td>${i + 1}</td>
         <td>${contact.name ? contact.name : "-"}</td>
         <td>${contact.email ? contact.email : "-"}</td>
         <td>${contact.phone ? contact.phone : "-"}</td>
+        <td>
+            <div class="dropdown">
+              <i
+                style="cursor: pointer"
+                class="bi bi-three-dots"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              ></i>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Edit</a></li>
+                <li>
+                  <a class="dropdown-item text-danger delete-button" href="#" data-contact="${
+                    contact.name
+                  }">Delete</a>
+                </li>
+              </ul>
+            </div>
+          </td>
       </tr>
     `;
-    });
-
-    contactsTable.innerHTML = list;
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-deleteButton.addEventListener("click", function (e) {
-  e.preventDefault();
-
-  Swal.fire({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch(`/delete/${this.dataset.contact}`, {
-        method: "delete",
-      })
-        .then((res) => res.text())
-        .then((res) => console.log(res));
-
-      // console.log(e);
-
-      // Swal.fire({
-      //   title: "Deleted!",
-      //   text: "Your file has been deleted.",
-      //   icon: "success",
-      // });
-    }
   });
-});
+
+  return list;
+}
