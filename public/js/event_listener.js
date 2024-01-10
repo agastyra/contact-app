@@ -1,4 +1,27 @@
-const deleteButton = document.querySelector(".delete-button");
+document.addEventListener("DOMContentLoaded", async function (e) {
+  const contactsTable = document.querySelector("table#contacts tbody");
+  try {
+    const response = await fetch("/contacts");
+    const { data } = await response.json();
+    const contacts = data;
+    let list = "";
+
+    contacts.forEach((contact, i) => {
+      list += `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${contact.name ? contact.name : "-"}</td>
+        <td>${contact.email ? contact.email : "-"}</td>
+        <td>${contact.phone ? contact.phone : "-"}</td>
+      </tr>
+    `;
+    });
+
+    contactsTable.innerHTML = list;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 deleteButton.addEventListener("click", function (e) {
   e.preventDefault();

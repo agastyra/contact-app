@@ -7,10 +7,14 @@ const appInit = () => {
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, "[]", "utf-8");
 };
 
-const loadContacts = () => {
-  const data = fs.readFileSync(filePath, "utf-8");
+const loadContacts = async () => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, "utf-8", (err, data) => {
+      if (err) reject(err.message);
   const contacts = JSON.parse(data);
-  return contacts;
+      resolve(contacts);
+    });
+  });
 };
 
 const addContact = (data) => {

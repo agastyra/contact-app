@@ -16,34 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <% if (contacts.length > 0) { contacts.forEach((contact, no) => { %>
-        <tr>
-          <th><%= no + 1 %></th>
-          <td><%= contact.name ? contact.name : "-" %></td>
-          <td><%= contact.email ? contact.email : "-"%></td>
-          <td><%= contact.phone ? contact.phone : "-"%></td>
-          <td>
-            <div class="dropdown">
-              <i
-                style="cursor: pointer"
-                class="bi bi-three-dots"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              ></i>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Edit</a></li>
-                <li>
-                  <a class="dropdown-item text-danger delete-button" href="#" data-contact="<%= contact.name %>">Delete</a>
-                </li>
-              </ul>
-            </div>
-          </td>
-        </tr>
-        <% }) } else {%>
-        <tr>
-          <td colspan="5" class="text-muted">No data.</td>
-        </tr>
-        <% } %>
+        <td colspan="5">No contact in list.</td>
       </tbody>
     </table>
   </div>

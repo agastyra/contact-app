@@ -27,12 +27,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  const contacts = loadContacts();
-
+app.get("/", async (req, res) => {
   res.render("home", {
     layout: "layouts/app",
-    contacts,
   });
 });
 
