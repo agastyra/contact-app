@@ -32,4 +32,13 @@ const addContact = (data) => {
   fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
 };
 
-module.exports = { appInit, loadContacts, addContact };
+const deleteContact = async (name) => {
+  const contacts = await loadContacts();
+  const contact = contacts.find((contact) => contact.name === name);
+
+  const index = contacts.indexOf(contact);
+  contacts.splice(index, 1);
+  fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
+};
+
+module.exports = { appInit, loadContacts, addContact, deleteContact };

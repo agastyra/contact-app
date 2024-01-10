@@ -3,7 +3,12 @@ const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
 const dotenv = require("dotenv");
 const { validationResult, matchedData } = require("express-validator");
-const { appInit, loadContacts, addContact } = require("./utils/contact");
+const {
+  appInit,
+  loadContacts,
+  addContact,
+  deleteContact,
+} = require("./utils/contact");
 const {
   validateEmail,
   validatePhone,
@@ -69,7 +74,24 @@ app.post(
 );
 
 app.delete("/delete/:name", (req, res) => {
-  res.send(req.params.name);
+  try {
+    deleteContact(req.params.name);
+    res.status(200).json({ message: `${req.params.name} has been deleted.` });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Something went wrong. Please try again later." });
+  }
+});
+
+app.get("/contacts", async (req, res) => {
+  try {
+    const contacts = await loadContacts();
+
+    res.status(200).json({ data: contacts });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to load contacts" });
+  }
 });
 
 app.use((req, res) => {

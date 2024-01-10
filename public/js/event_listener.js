@@ -4,6 +4,45 @@ document.addEventListener("DOMContentLoaded", async function (e) {
     const response = await fetch("/contacts");
     const { data } = await response.json();
     const contacts = data;
+  document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("delete-button")) {
+      e.preventDefault();
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await fetch(`/delete/${e.target.dataset.contact}`, {
+              method: "delete",
+            });
+  
+            if (response.status == 200 && response.statusText == "OK") {
+              const { message } = await response.json();
+  
+              Swal.fire({
+                title: "Deleted!",
+                text: message,
+                icon: "success",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = "/";
+                }
+              });
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      });
+    }
+  });
+}
     let list = "";
 
     contacts.forEach((contact, i) => {
