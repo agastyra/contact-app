@@ -23,20 +23,27 @@ if (window.location.pathname == "/") {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const response = await fetch(`/delete/${e.target.dataset.contact}`, {
-              method: "delete",
-            });
-  
+            const response = await fetch(
+              `/delete/${e.target.dataset.contact}`,
+              {
+                method: "delete",
+              }
+            );
+
             if (response.status == 200 && response.statusText == "OK") {
               const { message } = await response.json();
-  
+
               Swal.fire({
                 title: "Deleted!",
                 text: message,
                 icon: "success",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.href = "/";
