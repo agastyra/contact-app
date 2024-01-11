@@ -2,7 +2,7 @@ if (window.location.pathname == "/") {
   document.addEventListener("DOMContentLoaded", async function (e) {
     const contactList = document.querySelector(".contact-list");
     try {
-      const response = await fetch("/contacts");
+      const response = await fetch("/api/contacts");
       const { data } = await response.json();
       const contacts = data;
       const list = EachContact(contacts);
@@ -95,7 +95,7 @@ function EachContact(contacts = []) {
                 aria-expanded="false"
               ></i>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Edit</a></li>
+                <li><a class="dropdown-item" href="/edit/${contact.name}">Edit</a></li>
                 <li>
                   <a class="dropdown-item text-danger delete-button" href="#" data-contact="${
                     contact.name
