@@ -21,17 +21,17 @@ const validatePhone = (phone) =>
 
 const validateName = (name) =>
   body(name)
-    .custom(async (value) => {
+    .custom(async (value, { req }) => {
       const contacts = await loadContacts();
       const duplicated = contacts.find((contact) => {
         return contact.name == value;
       });
 
-      if (duplicated) {
-        throw new Error("Name is already in use");
+      if (!duplicated || duplicated.name == req.body.name) {
+        return true;
       }
-
-      return true;
+      
+      throw new Error("Name is already in use");
     })
     .isLength({ min: 3, max: 50 })
     .withMessage("The number of characters should be between 3 - 50");

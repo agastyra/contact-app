@@ -8,6 +8,8 @@ const {
   loadContacts,
   addContact,
   deleteContact,
+  findContact,
+  updateContact,
 } = require("./utils/contact");
 const {
   validateEmail,
@@ -69,6 +71,44 @@ app.post(
     }
 
     addContact(req.body);
+    res.redirect("/");
+  }
+);
+
+app.get("/edit/:name", async (req, res) => {
+  const contact = await findContact(req.params.name);
+
+  res.render("edit-contact", {
+    layout: "layouts/app",
+    errors: [],
+    data: [],
+    contact,
+    showErrorMessage,
+    isInputError,
+  });
+});
+
+app.post(
+  "/edit/:name",
+  [validateName("name"), validateEmail("email"), validatePhone("phone")],
+  async (req, res) => {
+    const result = validationResult(req);
+    const contact = matchedData(req, {
+      onlyValidData: false,
+      includeOptionals: true,
+    });
+    if (!result.isEmpty()) {
+      res.render("edit-contact", {
+        layout: "layouts/app",
+        errors: result.array(),
+        contact,
+        showErrorMessage,
+        isInputError,
+      });
+      return false;
+    }
+
+    updateContact(req.body);
     res.redirect("/");
   }
 );

@@ -1,0 +1,80 @@
+<h2>Edit Contact</h2>
+
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb" class="mt-4">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add new Contact</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-6">
+    <hr />
+
+    <form action="/edit/<%= contact.name %>" method="post">
+      <div class="mb-3">
+        <label for="name" class="form-label fw-bold">Name</label>
+        <input
+        type="text"
+        class="form-control <%= isInputError('name', errors) ? 'is-invalid' : '' %>"
+        id="name"
+        name="name"
+        required
+        placeholder="John Doe"
+        minlength="2"
+        maxlength="50"
+        min="2"
+        max="50"
+        <% if (contact.name) { %>
+        value="<%= contact.name %>"
+        <% } %>
+        />
+        <div class="invalid-feedback">
+          <%= showErrorMessage('name', errors) %>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label fw-bold">Email address</label>
+        <input
+          type="email"
+          class="form-control <%= isInputError('email', errors) ? 'is-invalid' : '' %>"
+          id="email"
+          name="email"
+          placeholder="john.doe@gmail.com"
+          minlength="6"
+          maxlength="100"
+          min="6"
+          max="100"
+          <% if (contact.email) { %>
+          value="<%= contact.email %>"
+          <% } %>
+        />
+        <div class="invalid-feedback">
+          <%= showErrorMessage('email', errors) %>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label fw-bold">Phone Number</label>
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          class="form-control <%= isInputError('phone', errors) ? 'is-invalid' : '' %>"
+          required
+          placeholder="087182839441"
+          minlength="12"
+          maxlength="13"
+          min="12"
+          max="13"
+          <% if (contact.phone) { %>
+          value="<%= contact.phone %>"
+          <% } %>
+        />
+        <div class="invalid-feedback">
+          <%= showErrorMessage('phone', errors) %>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

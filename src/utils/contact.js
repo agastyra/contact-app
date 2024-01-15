@@ -17,11 +17,13 @@ const loadContacts = async () => {
   });
 };
 
-const addContact = async (data) => {
-  const name = data.name;
-  const email = data.email;
-  const phone = data.phone;
+const findContact = async (name) => {
   const contacts = await loadContacts();
+  const contact = contacts.find((contact) => contact.name === name);
+
+  const index = contacts.indexOf(contact);
+  return contacts[index];
+};
 
   contacts.push({
     name,
@@ -38,6 +40,15 @@ const deleteContact = async (name) => {
 
   const index = contacts.indexOf(contact);
   contacts.splice(index, 1);
+const updateContact = async ({ name, email, phone }) => {
+  const contacts = await loadContacts();
+  const contact = contacts.find((contact) => contact.name === name);
+  const updatedContact = { name, email, phone };
+
+  const index = contacts.indexOf(contact);
+  contacts[index] = updatedContact;
+  saveContacts(contacts);
+};
   fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
 };
 
