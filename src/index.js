@@ -124,7 +124,7 @@ app.delete("/delete/:name", (req, res) => {
   }
 });
 
-app.get("/contacts", async (req, res) => {
+app.get("/api/contacts", async (req, res) => {
   try {
     const contacts = await loadContacts();
 
@@ -135,8 +135,9 @@ app.get("/contacts", async (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404);
-  res.send(`Url '${req.url}' is not found! Please type correct url!`);
+  res
+    .status(404)
+    .send(`Url '${req.url}' is not found! Please type correct url!`);
 });
 
 app.listen(PORT, () => {

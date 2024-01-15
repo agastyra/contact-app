@@ -25,13 +25,15 @@ const findContact = async (name) => {
   return contacts[index];
 };
 
+const addContact = async ({ name, email, phone }) => {
+  const contacts = await loadContacts();
   contacts.push({
     name,
     email,
     phone,
   });
 
-  fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
+  saveContacts(contacts);
 };
 
 const deleteContact = async (name) => {
@@ -40,6 +42,9 @@ const deleteContact = async (name) => {
 
   const index = contacts.indexOf(contact);
   contacts.splice(index, 1);
+  saveContacts(contacts);
+};
+
 const updateContact = async ({ name, email, phone }) => {
   const contacts = await loadContacts();
   const contact = contacts.find((contact) => contact.name === name);
@@ -49,7 +54,16 @@ const updateContact = async ({ name, email, phone }) => {
   contacts[index] = updatedContact;
   saveContacts(contacts);
 };
+
+const saveContacts = (contacts = []) => {
   fs.writeFileSync(filePath, JSON.stringify(contacts), "utf-8");
 };
 
-module.exports = { appInit, loadContacts, addContact, deleteContact };
+module.exports = {
+  appInit,
+  loadContacts,
+  addContact,
+  deleteContact,
+  findContact,
+  updateContact,
+};
